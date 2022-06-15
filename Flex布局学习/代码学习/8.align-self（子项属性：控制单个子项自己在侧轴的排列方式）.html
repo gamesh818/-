@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>8.align-self（子项属性：控制单个子项自己在侧轴的排列方式）</title>
+</head>
+<body>
+
+    <div id="app">
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+    </div>
+
+
+
+</body>
+
+<style>
+    #app{
+        width: 800px;
+        height: 300px;
+        border: 1px solid #ccc;
+        background-color:pink;
+        /*设置为flex弹性布局*/
+        display: flex;
+
+        /*使用flex-items设置三个子盒子同时进行低侧对齐*/
+        align-items: flex-end;
+
+    }
+    #app span{
+        width: 100px;
+        height: 150px;
+        border: 1px solid #ccc;
+        background-color:palegoldenrod;
+        margin: 5px;
+    }
+    /*但是需要其中一个子元素需要与其他子元素不同的侧轴对齐方式*/
+    /*则可以使用 align-self 单独调整单个盒子的侧轴对齐方式*/
+    #app span:nth-child(2){
+        align-self:flex-start;
+    }
+
+</style>
+
+
+</html>

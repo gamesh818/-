@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>7.flex（子项属性：定义子项目分配的份数）</title>
+</head>
+<body>
+
+    <div id="app">
+        <!--圣杯布局-->
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+    </div>
+
+    <div id="add">
+        <!--圣杯布局-->
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+    </div>
+
+
+</body>
+
+<style>
+/*--------------圣杯布局-----------------------*/
+    #app{
+        width: 800px;
+        height: 180px;
+        border: 1px solid #ccc;
+        background-color:pink;
+        /*设置为flex弹性布局*/
+        display: flex;
+        /*flex-flow:wrap column;*/
+    }
+    #app span:nth-child(1){
+        width: 100px;
+        height: 150px;
+        border: 1px solid #ccc;
+        background-color:red;
+        margin: 5px;
+    }
+
+    #app span:nth-child(2){
+        height: 150px;
+        border: 1px solid white;
+        background-color:yellow;
+        margin: 5px;
+        /*flex：1   分配了一份 值除了第一个盒子与第三个盒子的大小剩余的空间分配*/
+        flex: 1;
+
+    }
+    #app span:nth-child(3){
+        width: 100px;
+        height: 150px;
+        border: 1px solid #ccc;
+        background-color:blue;
+        margin: 5px;
+    }
+/*-------------------------------------*/
+#add{
+    width: 800px;
+    height: 180px;
+    margin-top: 50px;
+    border: 1px solid #ccc;
+    background-color:pink;
+    /*设置为flex弹性布局*/
+    display: flex;
+    /*flex-flow:wrap column;*/
+}
+
+#add span{
+    flex: 1;
+    margin:1px;
+    background-color:darkcyan;
+}
+
+#add span:nth-child(2){
+    flex: 2;
+    background-color:chartreuse;
+
+}
+</style>
+
+
+</html>

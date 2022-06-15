@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>6.flex-flow（父项属性：flex-direction[主轴方向]与flex-wrap[是否换行]的复合属性）</title>
+</head>
+<body>
+
+    <div id="app">
+
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>5</span>
+    </div>
+
+
+
+
+</body>
+
+<style>
+
+    #app{
+        width: 800px;
+        height: 500px;
+        border: 1px solid #ccc;
+        /*设置为flex弹性布局*/
+        display: flex;
+
+        /*可以使用flex-flow 简写以下两段代码*/
+
+        /*设置主轴为Y轴*/
+        /*flex-direction: column;*/
+        /*设置自动换行*/
+        /*flex-wrap:wrap;*/
+
+        flex-flow:wrap column;
+    }
+
+    #app span{
+        width: 150px;
+        height: 150px;
+        border: 1px solid pink;
+        background-color:pink;
+        margin: 5px;
+    }
+
+
+</style>
+
+
+</html>

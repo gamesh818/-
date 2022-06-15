@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>1.flex-direction（父项属性：主轴与侧轴）</title>
+</head>
+<body>
+
+    <div id="app">
+
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+
+    </div>
+
+
+
+
+</body>
+
+<style>
+
+    #app{
+        width: 800px;
+        height: 500px;
+        border: 1px solid #ccc;
+        /*设置为flex弹性布局*/
+        display: flex;
+        /*默认设置主轴为x轴 （从左到右）*/
+        flex-direction:row;
+        /*设置为x轴翻转*/
+        /*flex-direction:row-reverse;*/
+        /*设置为y轴 （从上到下）*/
+        /*flex-direction:column;*/
+        /*设置为y轴翻转*/
+        /*flex-direction:column-reverse;*/
+/*---------------------------------------------------*/
+        /*justify-content 是设置主轴上子元素的排列方式*/
+
+        /*默认设置为 flex-start 从头部开始排列 */
+        /*justify-content: flex-start;*/
+
+        /*设置为flex-end 从尾部开始排列 （与水平翻转不同的是元素排序顺序不变 */
+        /*justify-content: flex-end;*/
+
+        /*设置为center 子元素居中对齐*/
+        /*justify-content:center;*/
+
+        /*设置为space-around  元素平分剩余空间*/
+        /*justify-content:space-around;*/
+
+        /*设置为space-between 元素先两边贴边，再分配剩余空间*/
+        justify-content: space-between;
+    }
+
+    #app span{
+        width: 150px;
+        height: 150px;
+        border: 1px solid pink;
+        background-color:pink;
+    }
+
+
+</style>
+
+
+</html>

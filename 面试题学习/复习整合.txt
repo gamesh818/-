@@ -84,26 +84,6 @@ ul li .list1{
 
 
 
-### 5.用CSS画一个三角形
-
-```css
-使用边框(border)画
-
-div{
-    width:0;
-    height:0;
-    /*哪个方向需要为三角形的底 就在哪个方向给颜色*/
-    border-top:100px solid #ccc;
-    border-bottom:100px solid tansparent;
-    border-left:100px solid tansparent;
-    border-right:100px solid tansparent;
-        
-}
-
-
-宽高设为0，把左上右边框颜色都设置为透明，然后bottom给一个尺寸
-```
-
 
 
 ### 6.一个盒子不给宽高如何水平居中
@@ -190,19 +170,6 @@ BFC就是一个隔离的独立容器，容器里面的元素不会影响到外�
 ```
 
 
-
-### 9.清除浮动有哪些方式？
-
-```css
-1.触发BFC (overflow:hindden)
-2.多创建一个盒子，添加clear:both；
-3.*重要* 加一个after伪类元素 
-ul:after{
-    content:'';
-    display:block.;
-    clear:both;
-}
-```
 
 
 
@@ -372,27 +339,6 @@ i与em的区别：
 
  
 
-### 7. img标签的title和alt有什么区别？
-
-```
-区别一：
-	title	：鼠标移入到图片后显示的值
-	alt		：图片无法加载时显示的值
-区别二：
-	在SEO的层面，蜘蛛抓取不到图片的内容，所以前端在在img标签时，为了增加seo效果，需要加入alt属性来描述这张图是什么内容或者关键词。
-```
-
-
-
-### 8. png、jpg、gif 这些图片格式解释一下，分别什么时候用？
-
-```
-png：无损压缩，清晰度更高，尺寸要比jpg/jpeg更大，适合做小图标。
-jpg：采用压缩算法，清晰度比png稍差，但体积比png更小，适合用中大型的图片使用。
-gif：一般是做动图。
-webp：同时支持有损或无损压缩，相同质量的图片，webp具有更小的体积。兼容性不是很好。
-```
-
 
 
 
@@ -401,7 +347,7 @@ webp：同时支持有损或无损压缩，相同质量的图片，webp具有更
 
 # JS
 
-### 1.延迟加载JS有哪些方式？
+## 1.延迟加载JS有哪些方式？
 
 ```js
 1.js脚本放在文档的底部，来使js脚本尽可能的在最后来加载执行
@@ -415,7 +361,7 @@ async 与 befer 的区别
 2.defer 等html解析完成后，才会顺次执行js脚本
 ```
 
-### 2.JS数据类型有哪些
+## 2.JS数据类型有哪些
 
 ```js
 基本类型：string、number、boolean、undefined、null、symbol、bigint
@@ -425,7 +371,7 @@ async 与 befer 的区别
 
 
 
-### 3.null与undefined的区别
+## 3.null与undefined的区别
 
 
 
@@ -433,7 +379,7 @@ async 与 befer 的区别
 
 
 
-### 4.微任务和宏任务
+## 4.微任务和宏任务
 
 ```
 1.js是单线程语言
@@ -446,55 +392,11 @@ async 与 befer 的区别
 
 ```
 
-1. ### promise的几个API
 
-promise.resolve(1)
 
-promise.reject(1)
 
-promise.all([promise1,promise2,promise3])
 
-promise.race([promise1,promise2,promise3])
-
-1. promise的三个状态
-   pending，表示进行中
-
-fulfilled也是resolved，表示成功
-
-rejected，表示失败
-
-### 2.promise的状态变化
-
-只能从pending->resolved或者pending->rejected
-
-promise的状态改变后就不会再次改变会一直保持这个状态，而且promise不会受到外界的影响，只会受到异步操作的结果的影响
-
-### 3.promise的基本用法
-
-new Promise((resolve,reject)=>{
-				if(true){
-					resolve(value);
-				}else{
-					reject(err);
-				}
-			}).then(
-				value=>{};
-				reason=>{};
-			).catch(
-			)
-新建一个promise构造函数，函数接受一个函数作为参数，同时该函数有两个参数，reject和resolve
-
-执行异步操作
-
-成功执行resolve()，状态变成resolved状态
-
-失败执行reject()，状态变成rejected状态
-
-无论成功还是失败都可以通过.then()指定成功和失败的回调函数，catch只能调用失败的回调函数
-
-promise是同步执行，then是异步执行
-
-### 5.JS中的同步与异步
+## 5.JS中的同步与异步
 
 - 同步就是指放在主线程中执行的任务，只有主线程中上一个任务执行完毕才执行下一个同步任务
 
@@ -504,7 +406,13 @@ promise是同步执行，then是异步执行
 
 - executor是promise的执行器函数，是同步执行的函数，也就是说promise是同步，而promise的回调函数是异步
 
-### 6.宏队列和微队列
+
+
+
+
+
+
+## 6.宏队列和微队列
 
 - 宏队列：用来保存待执行的宏任务，，比如定时器、DOM回调、ajax回调。
 

@@ -517,6 +517,93 @@ int main() {
 }
 ```
 
+### 14.结构体(对象)
+
+- 类似js的对象 
+
+```c
+//创建一个结构体类型 (类似js的对象)
+struct Book
+{
+	char name[20];
+	short price;
+};
+int main() {
+	//使用结构体 创建一个该类型的结构体变量
+	struct Book b1 = { "C语言XXX",50 };
+	//打印
+	printf("书名：%s\n", b1.name);
+	printf("价格：%d\n", b1.price);
+	//修改结构体中的数据
+	b1.price = 250;
+	printf("修改后的价格：%d\n", b1.price);
+
+	return 0;
+}
+```
+
+- 结构体使用指针变量储存 并 使用指针变量打印数据
+
+```c
+//创建一个结构体类型 (类似js的对象)
+struct Book
+{
+	char name[20];
+	short price;
+};
+
+int main() {
+	//使用结构体 创建一个该类型的结构体变量
+	struct Book b1 = { "C语言XXX",50 };
+	//获取b1的指针位置 用pb指针变量储存
+	struct Book* pb = &b1;
+	printf("指针变量：%p\n", pb);
+
+	//.操作符 引用于   结构体变量.成员
+	//->操作符 引用于 结构体变量->成员
+
+	//利用pb指针变量打印出 b1的书名和价格
+	printf("书名：%s 价格：%d\n", (*pb).name, (*pb).price); // 书名:C语言XXX 价格:50
+	//简化上行的(*pb).name  pb->name
+	printf("书名：%s 价格：%d\n", pb->name, pb->price); // 书名:C语言XXX 价格:50
+
+	return 0;
+}
+```
+
+
+
+### 15.分支和循环语句
+
+#####  1.if语句
+
+- 语句结构：
+
+  - ```c
+    // 单分支
+    if(表达式){
+        语句;
+    }
+       
+    // 双分支
+    if(表达式){
+        语句1;
+    }else {
+        语句2;
+    }
+        
+    
+    // 多分支
+    if(表达式1){
+        语句1;
+    }else if(表达式2){
+        语句2;
+    }else{
+        语句3
+    }
+    ```
+
+    
 
 
 
@@ -561,22 +648,3 @@ int main() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# C++语言

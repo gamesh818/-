@@ -573,7 +573,7 @@ int main() {
 
 
 
-### 15.分支和循环语句
+### 15.分支
 
 #####  1.if语句
 
@@ -603,16 +603,132 @@ int main() {
     }
     ```
 
+
+##### 2.switch语句
+
+- 语句结构：
+
+  - ```c
+    switch(整型表达式){
+          // 语句项
+           case 整型常量表达式;
+            	语句;
+            	break; // 达成条件 运行代码块后 break跳出switch语句
+           case xxx;
+            	语句;
+            	break;
+            ...
+           	default:
+    			语句
+    		break;
+    }
+    ```
+
+- 例子：
+
+  - ```c
+    int main() {
+    	int day = 3;
     
+    	switch (day)
+    	{
+    	case 1:
+    		printf("星期一\n");
+    		break;
+    
+    	case 2:
+    		printf("星期二\n");
+    		break;
+    
+    	case 3:
+    		printf("星期三\n");
+    		break;
+    
+    	case 4:
+    		printf("星期四\n");
+    		break;
+    
+    	case 5:
+    		printf("星期五\n");
+    		break;
+    
+    	case 6:
+    		printf("星期六\n");
+    		break;
+    
+    	case 7:
+    		printf("星期天\n");
+    		break;
+    
+    	default:
+    		printf("我不到啊\n");
+    		break;
+    	};
+    	return 0;
+    }
+    ```
 
+### 16.循环语句
 
+##### 1.while循环
 
+- 语法结构：
 
+  - ```c
+    while(表达式){
+    	循环语句;
+    }
+    ```
 
+- 例子：
 
+  - ```c
+    int main() {
+    	//打印1 - 10
+    	int i = 1;
+    	while (i <= 10)
+    	{
+    		printf("%d\n", i);
+    		i++;
+    	};
+    	return 0;
+    }
+    ```
 
+- break
 
+  - ```c
+    int main() {
+    	//打印1 - 10
+    	int i = 1;
+    	while (i <= 10)
+    	{
+    		if (i == 5) { break; } // break 结束循环
+    		printf("%d\n", i); // 打印出1-4
+    		i++;
+    	};
+    	return 0;
+    }
+    ```
 
+- continue
+
+  - ```c
+    int main() {
+    	//打印1 - 10
+    	int i = 1;
+    	while (i <= 10)
+    	{
+    		i = i + 1;
+    		if (i == 5) { continue; } // continue 结束本轮循环 开始下一轮循环
+    
+    		printf("%d\n", i); // 打印出23467891011
+    	};
+    	return 0;
+    }
+    ```
+
+    
 
 
 

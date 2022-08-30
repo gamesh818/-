@@ -744,12 +744,107 @@ int main() {
 - 例子：
 
   - ```c
+    	//打印1 - 10
+    	for (int i = 1; i <= 10; i++) {
+    		if (i == 5) {
+    			continue;
+    		}
+    		printf("%d", i); // 1 2 3 4 6 7 8 9 10
+    	}
     
+    	return 0;
+    }
+    ```
+    
+
+##### 3.do... while()循环
+
+- 语法结构
+
+  - ```c
+    do{
+        循环语句;
+    }
+    while(表达式);
     ```
 
+- 例子
+
+  - ```c
+    int main() {
+    	//打印1 - 10
+    	int i = 1;
+    	do
+    	{
+    		printf("%d\n", i); // 1 2 3 4 5 6 7 8 9 10
+    		i++;
+    	} while (i <= 10);
     
+    	return 0;
+    }
+    ```
 
+- 打印出 1-5的乘阶
 
+  - ```c
+    
+    int main() {
+    	int sum = 0;
+    	int ret = 1;
+    	// 打印1!+!2+ ...5!
+    	for (int i = 1; i <= 5; i++)
+    	{
+    		ret = 1;
+    
+    		for (int j = 1; j <= i; j++)
+    		{
+    			ret *= j;
+    			//printf("%d\n", ret);
+    		}
+    
+    		sum += ret;
+    	}
+    	printf("%d\n", sum);
+    	return 0;
+    }
+    ```
+
+##### 4.二分法 查找有序数组中某个值
+
+```c
+int main() {
+	int arr[] = { 1,2,3,4,5,6,7,8,9,10 };
+	int k = 7; // 要查找的值
+	// sizeof(arr[0]) 一个数的长度为4  一共是40 所以是40/4 = 10
+	int size = sizeof(arr) / sizeof(arr[0]) - 1;
+	int left = 0; // 左下标
+	int right = size - 1; // 右下标
+
+	while (left <= right)
+	{
+		int mind = (left + right) / 2;
+		printf("%d\n", mind); // 打印中间值
+		if (k < arr[mind]) { // 所需的值是否小于 数组的中间值
+			right = mind - 1; // 如果小于 则right 边界为中间值-1
+		}
+		else if (k > arr[mind]) { // 如果所需的值大于 数组的中间值
+			left = mind + 1; // 如果大于 则left 边界为中间值+1
+		}
+		else { // 如果都不符合 中间值刚好是k
+			printf("下标为%d\n", mind);
+			break; // 找到后结束循环
+		}
+
+		//但是 如果 left大于right 则表示
+		if (left > right) {
+			printf("找不到！！");
+			break;
+		}
+	}
+
+	return 0;
+}
+```
 
 
 

@@ -846,9 +846,73 @@ int main() {
 }
 ```
 
+##### 5.多个字符从两端移动- 向中间汇聚
 
+- welcome to biy!!!!!!   
+- welc#########!!!!
 
+```c
+#include <stdio.h>
+#include <string.h>
+#include <windows.h>
+#include <stdlib.h>
 
+int main() {
+	char arr1[] = "welcome to bit!!!!!!";
+	char arr2[] = "####################";
+
+	int left = 0;
+	//int right = sizeof(arr) / sizeof(arr[0]) - 2; // 字符串数组最后还有一个 \0 还占一个位置 所以多-1
+	int right = strlen(arr1) - 1; // strlen查找的字符串数组长度 不会包括\0 所以-1就行
+
+	printf("%d\n", right);
+
+	while (left <= right)
+	{
+		arr2[left] = arr1[left];
+		arr2[right] = arr1[right];
+
+		Sleep(500);
+		system("cls");
+		left++;
+		right--;
+	}
+	printf("%s\n", arr2);
+
+	return 0;
+}
+```
+
+##### 6.编辑代码实现用户登陆情景，密码错误情况只有三次机会。
+
+```c
+int main() {
+	int password = 123456;
+	int chance = 3;
+	int inputPassword;
+
+	while (chance > 0)
+	{
+		printf("请输入密码！\n");
+		scanf_s("%d\d", &inputPassword);
+		printf("输入完成：%d\n", inputPassword);
+		if (password == inputPassword) {
+			printf("密码正确！登录成功\n");
+			break;
+		}
+		else {
+			system("cls");
+			printf("密码错误！\n");
+			chance--;
+			if (chance == 0) {
+				printf("输入密码机会已用完！请等待60分钟后重试\n");
+			}
+		}
+	}
+
+	return 0;
+}
+```
 
 
 

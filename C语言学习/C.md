@@ -451,9 +451,51 @@ int main() {
 
 ##### 6.函数的嵌套调用和链式访问
 
+- 函数嵌套调用：
 
+- 函数和函数之间可以有机组合。
 
+- 函数嵌套调用例子：
 
+  - ```c
+    int a() {
+    	printf("hahaha\n");
+    }
+    int b() {
+    	int i = 0;
+    	while (i <= 5)
+    	{
+    		a(); // 调用函数a
+    		i++;
+    	}
+    }
+    int main() {
+    	b();
+    	return 0;
+    }
+    ```
+
+- 链式访问：
+
+- 把一个函数的返回值 当成另一个函数的参数
+
+  - ```c
+    int main() {
+    	int len = 0;
+    	//非链式访问
+    	len = strlen("abc");
+    	printf("%d\n", len);
+    
+    	//把函数的返回值 放进一个函数的参数内 就是链式访问
+    	printf("%d\n", strlen("abc"));
+    
+        printf("%d", printf("%d", printf("%d", 43););); // 打印出4321 
+        // 因为printf返回值是打印的字符数
+    	return 0;
+    }
+    ```
+
+    
 
 
 
@@ -461,11 +503,47 @@ int main() {
 
 ##### 7.函数的声明和定义
 
+函数声明：
+
+- 告诉编辑器有一个函数叫什么，参数是什么，返回类型是什么。但是具体是不是存在，无关紧要。
+- 函数的声明一般出现在函数的使用之前，要满足先声明后使用。
+- 函数的声明一般要放在头文件(.h)中的。
 
 
 
+函数定义：
+
+- 函数的定义是指函数的具体实现，交代函数的功能实现。
 
 
+
+模块化例子：
+
+```c
+// add.c源文件  用来定义函数
+add(int x, int y) {
+	return x + y;
+}
+// add.h头文件  用来声明函数
+#ifndef __ADD_H__
+#define __ADD_H__
+// 函数声明
+add(int x,int y);
+
+#endif
+
+// test.c源文件 主文件 来调用、使用函数
+#include "add.h"
+
+int main() {
+	int num1 = 5;
+	int num2 = 10;
+
+	printf("%d\n", add(num1, num2)); // 15
+
+	return 0;
+}
+```
 
 
 

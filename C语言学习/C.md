@@ -1031,6 +1031,87 @@ int main() {
 
 ##### 7.数组作为函数参数
 
+- 冒泡排序函数
+
+```c
+// 传递来的数组 接收可以通过int* arr 或 int arr[] 接收
+fnD(int* arr, int sz) {
+	//决定轮数
+	for (int i = 0; i < sz - 1; i++) {
+		//假设这一趟要排序的数据 已经有序
+		int flag = 1;
+		//决定每轮的次数
+		for (int j = 0; j < sz - 1 - i; j++) {
+			if (arr[j + 1] < arr[j]) {
+				int max = arr[j];
+				arr[j] = arr[j + 1];
+				arr[j + 1] = max;
+				//如果数组进行了排序操作 则说明本轮排序不完全有序
+				flag = 0;
+			}
+		}
+		//本轮排序结束后 如果数组已经有序 则不进行下次排序
+		if (flag == 1) {
+			break;
+		}
+	}
+
+	for (int i = 0; i < sz; i++) {
+		printf("%d ", arr[i]);
+	}
+}
+
+int main() {
+	int arr[] = { 9,8,7,1,4,5,3,2,6,0 };
+	//对arr进行排序
+	int sz = sizeof(arr) / sizeof(arr[0]);
+	//arr是数组 我们传递过去的arr参数 实际上是arr首元素的地址
+	fnD(arr, sz);
+
+	return 0;
+}
+```
+
+- 数组名是什么？
+
+  - 数组名其实就是数组的首元素地址；
+
+  - ```c
+    int main() {
+    	int arr[] = { 9,8,7,1,4,5,3,2,6,0 };
+    
+    	//得到首元素的地址
+    	printf("%p\n", arr);  // 00000952C39FAC8
+    	printf("%p\n", &arr[0]); // 00000952C39FAC8
+    	//进行解引用 得到数组第一个值
+    	printf("%d\n", *arr); // 9
+    
+    	return 0;
+    }
+    ```
+
+  - 数组名在有两种例外的情况下不是首元素地址
+
+  - ```c
+    int main() {
+    	int arr[] = { 9,8,7,1,4,5,3,2,6,0 };
+    
+    	// 1.sizeof内部单独放一个数组名的时候 此时此刻的数组名表示整个数组
+    	// sizeof(数组名)计算的是整个数组的大小 单位是字节
+    	int sz = sizeof(arr) / sizeof(arr[0]);
+    
+    	//2.&（取地址）数组名 的时候代表整个数组。
+    	//&数组名，取出的是整个数组的地址。
+    	printf("%p\n", &arr); // 000000D79318F6B8
+    
+    	return 0;
+    }
+    ```
+
+    
+
+
+
 
 
 

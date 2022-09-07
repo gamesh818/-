@@ -1120,6 +1120,161 @@ int main() {
 
 
 
+###### 1.创建文件
+
+- ```c
+  // test.c
+  //测试游戏逻辑
+  
+  // 菜单
+  void menu() {}
+  // 游戏
+  void game() {}
+  // 菜单处理函数
+  void open() {}
+  // 主函数
+  int main() {
+  	return 0;
+  }
+  
+  // game.h
+  // 关于游戏相关的函数、符号声明，头文件包含。
+  
+  // game.c
+  //三子棋游戏相关函数实现
+  #define _CRT_SECURE_NO_WARNINGS 1;
+  #include <stdio.h>
+  
+  
+  ```
+
+###### 2.打开菜单
+
+```c
+// test.c
+#include "game.h"
+
+// 打印出选择菜单
+void menu() {
+	printf("***********************************\n");
+	printf("**********    1.play    ***********\n");
+	printf("**********    0.exit    ***********\n");
+	printf("***********************************\n");
+}
+
+void game() {}
+
+void open() {
+	int input = 0;
+	do {
+		//打开菜单
+		menu();
+		printf("请选择！");
+		//获取用户选择的数字
+		scanf("%d", &input);
+		//根据输入数字选择
+		switch (input) {
+		case 1:
+			printf("三子棋！\n");
+			break;
+		case 0:
+			printf("退出游戏！\n");
+			break;
+		default:
+			printf("输入错误！请重新选择！\n");
+			break;
+		}
+	} while (input);
+}
+
+int main() {
+	open();
+
+	return 0;
+}
+```
+
+###### 3.构建棋盘生成相关函数
+
+```c
+// game.h============================================================
+// 关于游戏相关的函数、符号声明，头文件包含。
+#define _CRT_SECURE_NO_WARNINGS 1;
+
+#include <stdio.h>
+
+// 符号的定义
+#define ROW 3
+#define COL 3
+
+// 函数的声明
+
+//初始化棋盘
+void InitBoard(char board[ROW][COL], int row, int col);
+//打印棋盘
+void displayBoard(char board[ROW][COL], int row, int col);
+
+// game.c============================================================
+//三子棋游戏相关函数实现
+#include "game.h"
+
+//初始化棋盘数据
+void InitBoard(char board[ROW][COL], int row, int col) {
+	//遍历二维数组 把所有数组所有数设为空格
+	for (int i = 0; i < row; i++) {
+		for (int j = 0; j < col; j++) {
+			board[i][j] = ' ';
+		}
+	}
+}
+
+//打印棋盘
+void displayBoard(char board[ROW][COL], int row, int col) {
+	// 打印几行
+	for (int i = 0; i < row; i++) {
+		{ // -----------打印数据-------------
+			//打印几列
+			for (int j = 0; j < col; j++) {
+				//打印数据
+				printf(" %c ", board[i][j]);
+				if (j < col - 1) { //最后一行不打印
+					printf("|");
+				}
+				// 每次打印一个数据 为 n | n | n | n
+			}
+			printf("\n");
+		}
+
+		{ // -----------打印分割线-------------
+			//打印上下分割线 如果行数是最后一行 则不打印
+			if (i < row - 1) {
+				//循环列数
+				for (int i = 0; i < col; i++)
+				{
+					//每有一列 则打印一个上下分割线
+					printf("---");
+					//如果是最后一列 则不打印
+					if (i < col - 1) {
+						printf("|");
+					}
+				}
+				printf("\n");
+			}
+		}
+	}
+}
+
+
+```
+
+
+
+
+
+
+
+
+
 
 
 ##### 9.数组的应用实例2：扫雷

@@ -1267,13 +1267,178 @@ void displayBoard(char board[ROW][COL], int row, int col) {
 
 ```
 
+###### 4.玩家与电脑下棋逻辑
+
+```c
+// game.c
+//玩家下棋
+void playMove(char board[ROW][COL], int row, int col) {
+	printf("玩家回合 \n");
+	int x = " ";
+	int y = " ";
+	while (1) {
+		printf("请输入坐标 =>");
+		scanf("%d %d", &x, &y);
+
+		//判断坐标是否合理
+
+		if (x >= 1 && y >= 1 && x <= row && y <= col) {
+			//判断对应坐标位置是否已落子
+			if (board[x - 1][y - 1] == ' ') {
+				board[x - 1][y - 1] = '*';
+				break;
+			}
+			else {
+				//如果已经落子 则提示重新输入
+				printf("输入坐标已落子 请重新输入\n");
+			}
+		}
+		else {
+			//如果不合法 则提示重新开始 不结束循环
+			printf("输入坐标不合法 请重新输入\n");
+		}
+	}
+}
+
+//电脑下棋
+void computerMove(char board[ROW][COL], int row, int col) {
+	printf("电脑回合 \n");
+	while (1) {
+		//获取随机数
+		// rand() % row=3  会得到随机的0-2
+		int x = rand() % row;
+		int y = rand() % col;
+
+		//判断随机出来的坐标是否已经落子
+		if (board[x][y] == ' ') {
+			board[x][y] = '#';
+			break;
+		}
+		//如果已经落子 则循环重新获取
+	}
+}
+```
+
+```c
+// test.c
+void game() {
+	//储存数据 二维数组
+	char board[ROW][COL];
+	//初始化棋盘 （空格）
+	InitBoard(board, ROW, COL);
+	//打印棋盘
+	displayBoard(board, ROW, COL);
+	//游戏输赢状态
+	char flag = 0;
+	while (1) { // 死循环 直到出赢家
+		//玩家先动
+		playMove(board, ROW, COL);
+		//打印棋盘
+		displayBoard(board, ROW, COL);
 
 
+		//电脑后动
+		computerMove(board, ROW, COL);
+		//打印棋盘
+		displayBoard(board, ROW, COL);
 
+	}
+}
+```
 
+###### 5.判断输赢逻辑
 
+```c
+//game.c
+//判断棋盘是否已经满了
+char isFull(char board[ROW][COL], int row, int col) {
+	for (int i = 0; i < row; i++) {
+		for (int j = 0; j < col; j++) {
+			if (board[i][j] == ' ') {
+				return 'N';
+			};
+		}
+	}
+	//循环完成后 并没有输出N 则代表棋盘已满 输出G
+	return 'G';
+}
 
+//输出 "*" 表示玩家胜利
+//输出 "#" 表示电脑胜利
+//输出 "G" 表示平局
+//输出 "N" 表示继续
+//判断谁赢
+char isWin(char board[ROW][COL], int row, int col) {
+	for (int i = 0; i < row; i++) {
+		//横向三子链接
+		if (board[i][0] == board[i][1] && board[i][1] == board[i][2] && board[i][1] != ' ') {
+			//输出胜利方符号
+			return board[i][1];
+		}
+	}
 
+	for (int i = 0; i < row; i++) {
+		//竖向三子链接
+		if (board[0][i] == board[1][i] && board[1][i] == board[2][i] && board[1][i] != ' ') {
+			//输出胜利方符号
+			return board[1][i];
+		}
+	}
+
+	//斜向三子链接
+	if (board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[1][1] != ' ') {
+		//输出胜利方符号
+		return board[1][1];
+	}
+	else if (board[0][2] == board[1][1] && board[1][1] == board[2][0] && board[1][1] != ' ') {
+		//输出胜利方符号
+		return board[1][1];
+	}
+
+	//判断棋盘是否已经输入满了 如果输入满了 则代表平局
+	return (isFull(board, row, col));
+}
+```
+
+```c
+// test.c
+void game() {
+	//储存数据 二维数组
+	char board[ROW][COL];
+	//初始化棋盘 （空格）
+	InitBoard(board, ROW, COL);
+	//打印棋盘
+	displayBoard(board, ROW, COL);
+	//游戏输赢状态
+	char flag = 0;
+	while (1) { // 死循环 直到出赢家
+		//玩家先动
+		playMove(board, ROW, COL);
+		//打印棋盘
+		displayBoard(board, ROW, COL);
+		//判断输赢
+		flag = isWin(board, ROW, COL);
+		if (flag != 'N') break;
+
+		//电脑后动
+		computerMove(board, ROW, COL);
+		//打印棋盘
+		displayBoard(board, ROW, COL);
+		//判断输赢
+		flag = isWin(board, ROW, COL);
+		if (flag != 'N') break;
+	}
+	if (flag == '*') {
+		printf("玩家胜利\n");
+	}
+	else if (flag == '#') {
+		printf("电脑胜利\n");
+	}
+	else if (flag == 'G') {
+		printf("平局！\n");
+	}
+}
+```
 
 
 

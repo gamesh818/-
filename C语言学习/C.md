@@ -1444,11 +1444,249 @@ void game() {
 
 ##### 9.数组的应用实例2：扫雷
 
+```c
+test.c - 扫雷游戏的测试
+
+game.c - 游戏的逻辑函数实现
+
+game.h - 游戏的逻辑函数声明
+#define  _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+//难度列表
+#define EASY_COUNT 10
+//游戏难度
+#define GAME_DIFFICULTY EASY_COUNT
+
+//棋盘大小
+#define ROW 9
+#define COL 9
+#define ROWS ROW+2
+#define COLS COL+2
+```
+
+###### 1.打印菜单
+
+```c
+// test.c
+dispalyMenu() {
+	printf("**********************************\n");
+	printf("**********  1.扫雷游戏  **********\n");
+	printf("**********  0.退出菜单  **********\n");
+	printf("**********************************\n");
+}
+main() {
+	//设置随机数
+	srand((unsigned int)time(NULL));
+	int input = ' ';
+	do {
+		//打印菜单
+		dispalyMenu();
+		//用户输入数字
+		scanf("%d", &input);
+		//判断用户选择项
+		switch (input) {
+		case 0:
+			printf("退出游戏-w-\n");
+			break;
+
+		case 1:
+			//开始游戏
+			game();
+			break;
+		default:
+			printf("输入错误 请重新选择！\n");
+			break;
+		}
+	} while (input);
+
+	return 0;
+}
+```
+
+###### 2.初始化棋盘
+
+```c
+//test.c
+game() {
+	int mine[ROWS][COLS]; // 存放布置炸弹的棋盘
+	int show[ROWS][COLS]; // 存放排查炸弹的棋盘
+
+	//初始化棋盘
+	initBoard(mine, ROWS, COLS, '0');
+	initBoard(show, ROWS, COLS, '*');
+}
+
+//game.h
+//初始化棋盘
+void initBoard(int board[ROWS][COLS], int rows, int cols, char set);
+
+// game.c
+//初始化棋盘
+void initBoard(int board[ROWS][COLS], int rows, int cols, char set) {
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < cols; j++) {
+			board[i][j] = set;
+		}
+	}
+}
+```
+
+###### 3.打印棋盘
+
+```c
+// test.c
+game() {
+	int mine[ROWS][COLS]; // 存放布置炸弹的棋盘
+	int show[ROWS][COLS]; // 存放排查炸弹的棋盘
+
+	//初始化棋盘
+	initBoard(mine, ROWS, COLS, '0');
+	initBoard(show, ROWS, COLS, '*');
+	//打印棋盘
+	//displayBoard(mine, ROW, COL);
+	displayBoard(show, ROW, COL);
+}
+
+// game.h
+//打印棋盘
+void displayBoard(int board[ROWS][COLS], int row, int col);
 
 
+//game.c
+//打印棋盘
+void displayBoard(int board[ROWS][COLS], int row, int col) {
+	printf("---------------------------------------\n"); // 打印分割线
+	for (int i = 0; i <= col; i++) { // 打印标尺数
+		printf("%d ", i);
+	}
+	printf("\n");
+	//打印棋盘数据
+	for (int i = 1; i <= row; i++) {
+		printf("%d ", i);// 打印标尺数
+		for (int j = 1; j <= col; j++) {
+			printf("%c ", board[i][j]);
+		}
+		printf("\n");
+	}
+	printf("---------------------------------------\n"); // 打印分割线
+}
+```
 
+###### 4.布置地雷
 
+```c
+// test.c
+game() {
+	int mine[ROWS][COLS]; // 存放布置炸弹的棋盘
+	int show[ROWS][COLS]; // 存放排查炸弹的棋盘
 
+	//初始化棋盘
+	initBoard(mine, ROWS, COLS, '0');
+	initBoard(show, ROWS, COLS, '*');
+	//打印棋盘
+	//displayBoard(mine, ROW, COL);
+	displayBoard(show, ROW, COL);
+
+	//布置地雷
+	setMine(mine, ROW, COL);
+}
+
+// game.h
+//布置地雷
+void setMine(int mine[ROWS][ROWS], int row, int col);
+
+// game.c
+//布置地雷
+void setMine(int mine[ROWS][COLS], int row, int col) {
+	int count = GAME_DIFFICULTY;
+
+	while (count) {
+		int x = rand() % row + 1;
+		int y = rand() % col + 1;
+		if (mine[x][y] == '0') {
+			mine[x][y] = '1';
+
+			count--;
+		}
+	}
+}
+```
+
+###### 5.排查地雷
+
+```c
+// test.c
+game() {
+	int mine[ROWS][COLS]; // 存放布置炸弹的棋盘
+	int show[ROWS][COLS]; // 存放排查炸弹的棋盘
+
+	//初始化棋盘
+	initBoard(mine, ROWS, COLS, '0');
+	initBoard(show, ROWS, COLS, '*');
+	//打印棋盘
+	displayBoard(show, ROW, COL);
+
+	//布置地雷
+	setMine(mine, ROW, COL);
+
+	//玩家排查地雷
+	finMine(mine, show, ROW, COL);
+}
+
+//game.h
+
+//排查地雷
+void finMine(int mine[ROWS][COLS], int show[ROWS][COLS], int row, int col);
+
+// game.c
+
+//查询坐标的旁边有几个地雷
+static int findMineCount(int mine[ROWS][COLS], int x, int y) {
+	int count = 0;
+	for (int i = x - 1; i <= x + 1; i++) {
+		for (int j = y - 1; j <= y + 1; j++) {
+			if (mine[i][j] == '1') {
+				count++;
+			}
+		}
+	}
+
+	return count;
+}
+
+//排查地雷
+void finMine(int mine[ROWS][COLS], int show[ROWS][COLS], int row, int col) {
+	int x = 0;
+	int y = 0;
+	int flag = (row * col) - GAME_DIFFICULTY;
+
+	while (flag) {
+		printf("请输入要排查的坐标=>");
+		scanf("%d %d", &x, &y);
+		//判断坐标合法性
+		if (x >= 1 && x <= row && y >= 1 && y <= col) {
+			if (mine[x][y] == '0') {
+				int mineCount = findMineCount(mine, show, row, col, x, y);
+				show[x][y] = mineCount + '0';
+				flag--;
+				displayBoard(show, ROW, COL);
+			}
+			else {
+				printf("BOMM！ 您死了！游戏结束！");
+				break;
+			}
+		}
+		else {
+			printf("坐标不合法 请重新输入！");
+		}
+	}
+	printf("恭喜您赢了！=w= ！\n");
+}
+```
 
 
 

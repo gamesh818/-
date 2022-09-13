@@ -2158,7 +2158,50 @@ void finMine(int mine[ROWS][COLS], int show[ROWS][COLS], int row, int col) {
     }
     ```
 
-    
+
+
+
+###### 2.算数转换
+
+- 如果某个操作符的各个操作符属于不同的类型，那么除非其中一个操作数转换为另一个操作数的类型，否则操作就无法进行。下面的层次体系称为**寻常算数转换**
+
+```c
+long double
+double
+float
+unsigned long int 
+long int
+unsigned int 
+int 
+```
+
+```c
+int main() {
+	int a = 4;
+	float b = 4.5f;
+
+	a + b;  // 向精度更高的进行转换  a转换为float
+
+	return 0;
+}
+```
+
+###### 3.操作符的属性
+
+- 复杂表达式的求值有三个影响的因素。
+  - 1.操作符的优先级 
+  - 2.操作符的结合性 
+  - 3.是否控制求值顺序
+
+```c
+int main() {
+	int a = 4;
+	int b = 5;
+	int c = a + b * 7;// 优先级决定计算顺序 （*的优先级比+更高）
+	int c = a + b + 7;// 优先级不起作用，则结合性决定顺序
+	return 0;
+}
+```
 
 
 

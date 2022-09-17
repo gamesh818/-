@@ -176,6 +176,41 @@ int main() {
 }
 ```
 
+##### 2.const 修饰指针变量
+
+```c
+int main() {
+	int m = 10;
+	int n = 100;
+
+	int* p = &m;  // 储存了&m的地址
+	//可以的操作：
+	*p = 0; //修改值
+	p = &n; //修改地址
+
+	int const* p = &m;  // 使用const 修饰了*p
+	//可以的操作：
+	p = &n;
+	//不可以的操作：
+	*p = 0;
+
+	int const* const p = &m; // 使用const修饰了 *p 与 p
+	//不可以的操作：
+	p = &n;
+	*p = 0;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
 ### 4.生命周期
 
 - 变量的生命周期指的是变量的创建到变量的销毁之间的一个时间段
@@ -3008,25 +3043,110 @@ int main() {
 
 
 
+### 15.模拟实现字符串相关函数
 
 
 
+#### 1.模拟实现strcpy
 
+##### - 基本使用：
 
+```c
+int main() {
+	char arr1[20] = "xxxxxxxxxxxxxx";
+	char arr2[] = "hello";
 
+	//模拟实现 strcpy(目标空间的起始地址,源空间的起始地址)
+	strcpy(arr1, arr2);
 
+	printf("%s\n", arr1); // hello
+}
+```
 
+##### - 基本实现：
 
+```c
+//模拟实现 strcpy(目标空间的起始地址,源空间的起始地址)
+void my_strcpy(char* dest, char* src) {
+	// *src 不等于\0时循环就不会结束 \0的ASCE码为0
+	while (*src) {
+		*dest = *src;
+		dest++;
+		src++;
+	}
+	//因为循环到 \0时结束了循环 没有把\0放在目标数组里 所以需要最后时候放入\0
+	*dest = *src;
+}
 
+int main() {
+	char arr1[20] = "xxxxxxxxxxxxxx";
+	char arr2[] = "hello";
 
+	my_strcpy(arr1, arr2);
+	printf("%s\n", arr1); // hello
+}
+```
 
+##### - 优化：拷贝逻辑优化
 
+```c
+void my_strcpy(char* dest, char* src) {
+	while (*dest++ = *src++);  // 优化
+    // 因为*dest++ = *src++是一个赋值表达式  而的返回值是赋过去值
+    // 赋值的最后是\0  ASCE码为0 所以停止循环
+    // 同时兼顾了停止循环 与 拷贝
+    
+    // *dest++ = *src++
+    // 相当于  a = 1  b= 2  c = a = b +2 
+    // c = a(a = b +2) 相当于c = a的值  返回的最后是c的值
+    // 所以  *dest++ = *src++ 返回的是*dest的被赋值后的值 
+}
 
+int main() {
+	char arr1[20] = "xxxxxxxxxxxxxx";
+	char arr2[] = "hello";
 
+	my_strcpy(arr1, arr2);
+	printf("%s\n", arr1); // hello
+}
+```
 
+##### - 优化：断言判断参数是否无效
 
+```c
+#include <assert.h>
+void my_strcpy(char* dest, char* src) {
+	//assert(条件)  断言  条件符合时发出错误
+	assert(dest != NULL); // 如果符合条件 则报错！
+	while (*dest++ = *src++);
+}
 
+int main() {
+	char arr1[20] = "xxxxxxxxxxxxxx";
+	char arr2[] = "hello";
+	my_strcpy(arr1, arr2);
+	printf("%s\n", arr1); // hello
+}
+```
 
+##### -优化：const限制源空间不会被改变
+
+```c
+//模拟实现 strcpy(目标空间的起始地址,源空间的起始地址)
+// 使用const 可以防止通过指针方式改变它的值
+void my_strcpy(char* dest, const char* src) {
+	assert(dest != NULL);
+	while (*src++ = *dest++); // 如果放反了 被const修饰的src指针会报错 无法赋值
+}
+
+int main() {
+	char arr1[20] = "xxxxxxxxxxxxxx";
+	char arr2[] = "hello";
+
+	my_strcpy(arr1, arr2);
+	printf("%s\n", arr1); // hello
+}
+```
 
 
 

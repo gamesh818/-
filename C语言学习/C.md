@@ -3118,6 +3118,7 @@ int main() {
 void my_strcpy(char* dest, char* src) {
 	//assert(条件)  断言  条件符合时发出错误
 	assert(dest != NULL); // 如果符合条件 则报错！
+    assert(src != NULL);
 	while (*dest++ = *src++);
 }
 
@@ -3129,14 +3130,16 @@ int main() {
 }
 ```
 
-##### -优化：const限制源空间不会被改变
+##### -优化：const限制源空间的值 不会被改变
 
 ```c
 //模拟实现 strcpy(目标空间的起始地址,源空间的起始地址)
 // 使用const 可以防止通过指针方式改变它的值
 void my_strcpy(char* dest, const char* src) {
 	assert(dest != NULL);
-	while (*src++ = *dest++); // 如果放反了 被const修饰的src指针会报错 无法赋值
+    assert(src != NULL);
+	// while (*src++ = *dest++);如果放反了 被const修饰的src指针会报错 无法赋值
+	while (*dest++ = *src++);
 }
 
 int main() {
@@ -3148,11 +3151,53 @@ int main() {
 }
 ```
 
+##### -优化：返回目标空间的起始地址
+
+```c
+//模拟实现 strcpy(目标空间的起始地址,源空间的起始地址)
+char* my_strcpy(char* dest, const char* src) {
+	assert(dest != NULL);
+	assert(src != NULL);
+
+	//strcpy这个库函数 最后返回的是目标空间的起始地址
+	char* ret = dest;
+	while (*dest++ = *src++);
+
+	//返回目标空间的起始地址
+	return ret;
+}
+
+int main() {
+	char arr1[20] = "xxxxxxxxxxxxxx";
+	char arr2[] = "hello";
+
+	//直接使用返回值
+	printf("%s\n", my_strcpy(arr1, arr2)); // hello
+}
+```
 
 
 
+### 2.模拟实现strlen
 
+```c
+//模拟实现 strlen
+// const 修饰 char* 无法修改传过来的地址的值
+int my_strlen(const char* str) {
+	int num = 0;
+	while (*str++ != '\0')
+	{
+		//str++;
+		num++;
+	}
+	return num;
+}
 
+int main() {
+	char arr1[20] = "xxxxxxxxxxxx";
+	printf("%d\n", my_strlen(arr1));
+}
+```
 
 
 

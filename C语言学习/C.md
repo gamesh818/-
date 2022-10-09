@@ -4000,11 +4000,89 @@ int main() {
 
 #### 5.函数指针
 
+```c
+int Add(int x, int y) {
+	return x + y;
+}
 
+int main() {
+	//&函数名 - 取到的就是函数的地址
+	printf("%p\n", &Add);
+
+	//函数指针 - 存放函数地址的指针
+	int (*pf)(int, int) = &Add;
+	//pf就是一个函数指针变量
+	//(*pf)() 说明这个是一个函数指针变量
+	//前面的int 是返回的数据类型
+	//(int,int) 是参数类型
+    
+    
+    int ret = Add(3, 5);  //输出8 1.根据函数名的方式调用函数
+	int ret = pf(3, 5);   //输出8 2.根据函数指针的方式调用函数
+	int ret = (*pf)(3, 5);//输出8 3.根据函数指针的方式调用函数
+
+	printf("%d\n", ret); // 三种方式完全等价
+    
+}
+```
+
+
+
+- `(*(void(*)())0)()` 该怎么解释呢？
+
+```c
+int main() {
+	(*(void(*)())0)();
+
+	//void(*)()  - 函数指针类型
+	//(void(*)())0 - 对0进行强制类型转换，解释为一个函数地址
+	//*(void(*)())0 - 对0地址进行解引用操作
+	//(*(void(*)())0)() - 对0地址处的函数进行调用
+}
+```
+
+- `void(*signal(int, void(*)(int)))(int)` 怎么解释？
+
+```c
+//void(*signal(int, void(*)(int)))(int);
+
+//1. signal和()先结合  说明signal是个函数名
+//2. signal函数的参数类型是  int类型 和 函数指针类型
+//	 该函数指针，指向一个参数为int，返回类型是void的函数
+//3. signal函数的返回类型 也是一个 函数指针类型
+// signal是一个函数的声明
+
+//简化：
+// typedef 对类型进行重定义
+typedef void (*pfun_t)(int); // 对void(*)(int) 的函数指针类型重命名为pfun_t
+
+pfun_t signal(int, void(*)(int));
+```
 
 
 
 #### 6.函数指针数组
+
+- 存放函数指针的数组
+
+```c
+int Add(int x, int y) {
+	return x + y;
+}
+int Sub(int x, int y) {
+	return x - y;
+}
+int main() {
+	//pf是指向函数的指针变量
+	int (*pf1)(int, int) = Add;
+	int (*pf2)(int, int) = Sub;
+
+	//pfArr就是函数指针数组
+	int (*pfArr[2])(int, int) = { Add,Sub };
+}
+```
+
+
 
 
 

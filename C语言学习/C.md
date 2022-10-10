@@ -4084,17 +4084,228 @@ int main() {
 
 
 
+- 计算机例子：
 
+- ```c
+  int Add(int x, int y) {
+  	return x + y;
+  }
+  int Sub(int x, int y) {
+  	return x - y;
+  }
+  int Mul(int x, int y) {
+  	return x * y;
+  }
+  int Div(int x, int y) {
+  	return x / y;
+  }
+  //输出菜单
+  void menu() {
+  	printf("******************************\n");
+  	printf("****** 1.add     2.sub *******\n");
+  	printf("****** 3.mul     4.div *******\n");
+  	printf("******      0.exit     *******\n");
+  	printf("******************************\n");
+  }
+  
+  int main() {
+  	//判断操作类型
+  	int input = 0;
+  	do {
+  		menu();
+  		//最终值
+  		int num = 0;
+  		//操作参数
+  		int x = 0;
+  		int y = 0;
+  		printf("请输入:>");
+  		//用户输入 操作类型
+  		scanf("%d", &input);
+  
+  		switch (input) {
+  		case 1:
+  			printf("请输入两个操作数！:>");
+  			scanf("%d %d", &x, &y);
+  			num = Add(x, y);
+  			printf("num = %d\n", num);
+  			break;
+  		case 2:
+  			printf("请输入两个操作数！:>");
+  			scanf("%d %d", &x, &y);
+  			num = Sub(x, y);
+  			printf("num = %d\n", num);
+  			break;
+  		case 3:
+  			printf("请输入两个操作数！:>");
+  			scanf("%d %d", &x, &y);
+  			num = Mul(x, y);
+  
+  			printf("num = %d\n", num);
+  			break;
+  		case 4:
+  			printf("请输入两个操作数！:>");
+  			scanf("%d %d", &x, &y);
+  			num = Div(x, y);
+  			printf("num = %d\n", num);
+  			break;
+  		case 0:
+  			printf("退出程序\n");
+  			break;
+  
+  		default:
+  			printf("选择错误 请重新选择！\n");
+  			break;
+  		}
+  	} while (input);
+  }
+  ```
 
+- 以上例子会发现 有大量重复代码冗余，但是可以使用函数指针数组进行大量简化：
 
+- ```c
+  int main() {
+  	//判断操作类型
+  	int input = 0;
+  	do {
+  		menu();
+  		//最终值
+  		int num = 0;
+  		//操作参数
+  		int x = 0;
+  		int y = 0;
+  		printf("请输入:>");
+  		//用户输入 操作类型
+  		scanf("%d", &input);
+  
+  		if (input == 0) {
+  			printf("退出程序！\n");
+  			break;
+  		}
+  		else if (!(input >= 1 && input <= 4)) {
+  			printf("输入错误请重新输入！\n");
+  		}
+  		else {
+  			//用户输入 操作数
+  			printf("请输入两个操作数！:>");
+  			scanf("%d %d", &x, &y);
+  			//创建函数指针数组
+  			int (*pfArr[5])(int, int) = { NULL, Add ,Sub,Mul,Div };
+  			//进行灵活调用函数 如果操作类型为1 则pfArr[1]() 可以调用到 Add 以此类推
+  			num = pfArr[input](x, y);
+  			printf("num = %d\n", num);
+  		}
+  	} while (input);
+  }
+  ```
+
+  
 
 #### 7.指向函数指针数组的指针
 
+- 指向 **函数指针数组** 的 **指针** 是一个 *指针* 。
 
+- ```c
+  int main() {
+  	int (*p)(int, int); // 函数指针
+  
+  	int (*p2[4])(int, int); // 函数指针数组
+  
+  	p3 = &p2; // &p2取出的是 函数指针数组 的 地址
+  	//p3 就是一个指向 【函数指针的数组】 的 【指针】
+  
+  	//那么 p3 应该怎么定义呢？
+  	int (*(*p3)[4])(int, int);
+  
+  	//*p3 表示 它是个指针
+  	//*(*p3)[4] 表示 它指向函数指针数组的指针
+  	//int (*)(int, int); 表示 函数指针数组中的每个元素指向的类型
+  }
+  ```
+
+  
 
 
 
 #### 8.回调函数
+
+- 回调函数是一个 **通过函数指针调用的函数** 。
+- 如果你把函数的指针（地址）座位参数传递给另一个函数，当这个指针被用来调用其所指向的函数时，这就是回调函数。
+- 回调函数不是由该函数的实现方直接调用，而是在特定的事件或条件发生时由另外的一方调用的。用于对该事件或条件进行响应。
+
+```c
+int Add(int x, int y) {
+	return x + y;
+}
+int Sub(int x, int y) {
+	return x - y;
+}
+int Mul(int x, int y) {
+	return x * y;
+}
+int Div(int x, int y) {
+	return x / y;
+}
+//输出菜单
+void menu() {
+	printf("******************************\n");
+	printf("****** 1.add     2.sub *******\n");
+	printf("****** 3.mul     4.div *******\n");
+	printf("******      0.exit     *******\n");
+	printf("******************************\n");
+}
+// 使用回调函数
+int Calc(int (*pf)(int, int)) {
+	//操作参数
+	int x = 0;
+	int y = 0;
+	printf("请输入两个操作数！:>");
+	scanf("%d %d", &x, &y);
+
+	//调用作为参数传递过来的函数指针（回调函数）
+	return pf(x, y);
+}
+
+int main() {
+	//判断操作类型
+	int input = 0;
+	do {
+		menu();
+		//最终值
+		int num = 0;
+
+		printf("请输入:>");
+		//用户输入 操作类型
+		scanf("%d", &input);
+
+		switch (input) {
+		case 1:
+			num = Calc(Add);
+			printf("num = %d\n", num);
+			break;
+		case 2:
+			num = Calc(Sub);
+			printf("num = %d\n", num);
+			break;
+		case 3:
+			num = Calc(Mul);
+			printf("num = %d\n", num);
+			break;
+		case 4:
+			num = Calc(Div);
+			printf("num = %d\n", num);
+			break;
+		case 0:
+			printf("退出程序\n");
+			break;
+		default:
+			printf("选择错误 请重新选择！\n");
+			break;
+		}
+	} while (input);
+}
+```
+
+
 
 
 

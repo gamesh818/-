@@ -4305,6 +4305,87 @@ int main() {
 }
 ```
 
+- **qsort函数**(排序函数)：
+
+  - ```c
+    void qsort(void* base, // ①待排序的数据中第一个对象的地址
+    	       size_t num, // ②数据有几个元素
+    	       size_t size, // ③一个元素的长度（大小）
+    	       int (*compar)(const void* b1, const void* b2) // ④函数指针 比较待排序数据中两个元素的函数
+    						// b1,b2是 两个比较的元素的地址
+    );
+    ```
+
+    
+
+
+
+- 简单的冒泡排序例子：
+
+  - ```c
+    int sort(int arr[], int sz) {
+    	for (int i = 0; i < sz - 1; i++) {
+    		for (int j = 0; j < sz - 1 - i; j++) {
+    			int tmp = arr[j];
+    			arr[j] = arr[j + 1];
+    			arr[j + 1] = tmp;
+    		}
+    	}
+    }
+    int printf_Arr(int arr[], int sz) {
+    	for (int i = 0; i < sz; i++) {
+    		printf("%d", arr[i]);
+    	}
+    	printf("\n");
+    }
+    
+    int main() {
+    	int arr[10] = { 9,8,7,6,5,4,3,2,1,0 };
+    	int sz = sizeof(arr) / sizeof(arr[0]);
+    	//冒泡排序
+    	printf_Arr(arr, sz);
+    	sort(arr, sz);
+    	printf_Arr(arr, sz);
+    }
+    
+    
+    ```
+
+- 使用qsort进行冒泡排序后：
+
+  - ```c
+    
+    int sort(const void* b1, const void* b2) {
+    	return *(int*)b1 - *(int*)b2;
+    	//强制转换为int*类型后 解引用 进行比较
+    	//b1大于b2 返回 < 0 的数字
+    	//b1等于b2 返回  0 的数字
+    	//b1大于b2 返回 > 0 的数字
+    }
+    
+    int printf_Arr(int arr[], int sz) {
+    	for (int i = 0; i < sz; i++) {
+    		printf("%d", arr[i]);
+    	}
+    	printf("\n");
+    }
+    
+    int main() {
+    	int arr[] = { 9,8,7,6,5,4,3,2,1,0 };
+    	int sz = sizeof(arr) / sizeof(arr[0]);
+    	//冒泡排序
+    	printf_Arr(arr, sz); // 9876543210
+    	qsort(arr, sz, sizeof(arr[0]), sort);
+    	printf_Arr(arr, sz); // 0123456789
+    }
+    ```
+
+    
+
+
+
+
+
 
 
 

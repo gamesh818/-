@@ -1,5 +1,7 @@
 ---
 
+
+
 ---
 
 # C语言
@@ -4305,19 +4307,18 @@ int main() {
 }
 ```
 
-- **qsort函数**(排序函数)：
 
-  - ```c
-    void qsort(void* base, // ①待排序的数据中第一个对象的地址
-    	       size_t num, // ②数据有几个元素
-    	       size_t size, // ③一个元素的长度（大小）
-    	       int (*compar)(const void* b1, const void* b2) // ④函数指针 比较待排序数据中两个元素的函数
-    						// b1,b2是 两个比较的元素的地址
-    );
-    ```
 
-    
+#### 9.qsort函数(排序函数)：
 
+- ```c
+  void qsort(void* base, // ①待排序的数据中第一个对象的地址
+  	       size_t num, // ②数据有几个元素
+  	       size_t size, // ③一个元素的长度（大小）
+  	       int (*compar)(const void* b1, const void* b2) // ④函数指针 比较待排序数据中两个元素的函数
+  						// b1,b2是 两个比较的元素的地址
+  );
+  ```
 
 
 - 简单的冒泡排序例子：
@@ -4347,52 +4348,138 @@ int main() {
     	sort(arr, sz);
     	printf_Arr(arr, sz);
     }
-    
-    
     ```
 
-- 使用qsort进行冒泡排序后：
+##### 1.使用qsort进行冒泡排序：
 
-  - ```c
-    
-    int sort(const void* b1, const void* b2) {
-    	return *(int*)b1 - *(int*)b2;
-    	//强制转换为int*类型后 解引用 进行比较
-    	//b1大于b2 返回 < 0 的数字
-    	//b1等于b2 返回  0 的数字
-    	//b1大于b2 返回 > 0 的数字
-    }
-    
-    int printf_Arr(int arr[], int sz) {
-    	for (int i = 0; i < sz; i++) {
-    		printf("%d", arr[i]);
-    	}
-    	printf("\n");
-    }
-    
-    int main() {
-    	int arr[] = { 9,8,7,6,5,4,3,2,1,0 };
-    	int sz = sizeof(arr) / sizeof(arr[0]);
-    	//冒泡排序
-    	printf_Arr(arr, sz); // 9876543210
-    	qsort(arr, sz, sizeof(arr[0]), sort);
-    	printf_Arr(arr, sz); // 0123456789
-    }
-    ```
+```c
+int sort(const void* b1, const void* b2) {
+	return *(int*)b1 - *(int*)b2;
+	//强制转换为int*类型后 解引用 进行比较
+	//b1大于b2 返回 < 0 的数字
+	//b1等于b2 返回  0 的数字
+	//b1大于b2 返回 > 0 的数字
+}
 
-    
+int printf_Arr(int arr[], int sz) {
+	for (int i = 0; i < sz; i++) {
+		printf("%d", arr[i]);
+	}
+	printf("\n");
+}
+
+//测试整型数据的排序
+void test1() {
+	int arr[] = { 9,8,7,6,5,4,3,2,1,0 };
+	int sz = sizeof(arr) / sizeof(arr[0]);
+	//冒泡排序
+	printf_Arr(arr, sz); // 9876543210
+	qsort(arr, sz, sizeof(arr[0]), sort);
+	printf_Arr(arr, sz); // 0123456789
+}
+
+//使用qsort函数排序 结构体数据
+struct Stu {
+	char name[20];
+	int age;
+};
+//根据年龄排序  这个函数作为传给qsort的回调函数
+int sort_by_age(const void* e1, const void* e2) {
+	//void*类型 无法进行解引用 所以强制类型转换为结构体类型的指针
+	return ((struct Stu*)e1)->age - ((struct Stu*)e2)->age;
+}
+
+//根据名字排序  这个函数作为传给qsort的回调函数
+int sort_by_name(const void* e1, const void* e2) {
+	//void*类型 无法进行解引用 所以强制类型转换为结构体类型的指针
+	// strcmp 进行比较 正好是qsort返回值一致
+	return strcmp(((struct Stu*)e1)->name, ((struct Stu*)e2)->name);
+}
+
+void test2() {
+	struct Stu s[] = { {"zhangsan",30},{"lisi",34},{"wangwu",20} };
+
+	int sz = sizeof(s) / sizeof(s[0]);
+	//按照年龄排序  传递自己制定的回调函数
+	//qsort(s, sz, sizeof(s[0]), sort_by_age);
+
+	//按照名字来排序  传递自己制定的回调函数
+	qsort(s, sz, sizeof(s[0]), sort_by_name);
+}
+
+int main() {
+	test1();
+	test2();
+	return 0;
+}
+```
+
+##### 2.模仿qsort 写一个冒泡排序（任意类型排序）
+
+```c
+//交换函数
+void Swap(char* buf1, char* buf2, int width) {
+	for (int i = 0; i < width; i++) {
+		char tmp = *buf1; //保存第一个字节
+		*buf1 = *buf2; //交换
+		*buf2 = tmp;
+		*buf1++; // 推进指针
+		*buf2++;
+	}
+}
+
+//模仿qsort实现一个冒泡排序的通用算法
+//void* base 没有具体类型的指针
+//int sz 元素的个数
+//int width 单个元素的大小
+//int (*cmp)(const void* e1,const void* e2) 传递过来的排序效果的回调函数
+void bubble_qsort(void* base, int sz, int width, int (*cmp)(const void* e1, const void* e2)) {
+	for (int i = 0; i < sz - 1; i++) {
+		for (int j = 0; j < sz - i - 1; j++) {
+			//使用回调函数 进行元素比较 需要传递两个地址
+			//将类型强制转换为char* 指针类型
+			if (cmp((char*)base + j * width, (char*)base + (j + 1) * width) > 0) {
+				//交换
+				Swap((char*)base + j * width, (char*)base + (j + 1) * width, width);
+			}
+		}
+	}
+}
+
+int sort(const void* b1, const void* b2) {
+	return *(int*)b1 - *(int*)b2;
+	//强制转换为int*类型后 解引用 进行比较
+	//b1大于b2 返回 < 0 的数字
+	//b1等于b2 返回  0 的数字
+	//b1大于b2 返回 > 0 的数字
+}
+
+int printf_Arr(int arr[], int sz) {
+	for (int i = 0; i < sz; i++) {
+		printf("%d", arr[i]);
+	}
+	printf("\n");
+}
+void test3() {
+	int arr[] = { 9,6,7,8,5,3,1,2,4,0 };
+	int sz = sizeof(arr) / sizeof(arr[0]);
+	//冒泡排序
+	printf_Arr(arr, sz); // 9678531240
+	bubble_qsort(arr, sz, sizeof(arr[0]), sort);
+	printf_Arr(arr, sz); // 0123456789
+}
+
+int main() {
+	test3();
+	return 0;
+}
+```
 
 
 
+##### 
 
-
-
-
-
-
-
-
-#### 9.指针和数组面试题的解析
+#### 10.指针和数组面试题的解析
 
 
 

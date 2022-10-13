@@ -4321,7 +4321,7 @@ int main() {
   ```
 
 
-- 简单的冒泡排序例子：
+- 简单的冒泡排序例子： 
 
   - ```c
     int sort(int arr[], int sz) {

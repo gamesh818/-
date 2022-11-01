@@ -4483,9 +4483,122 @@ int main() {
 
 
 
+##### [1] sizeof 计算整型数组
 
+- ```c
+  int main() {
+  	//sizeof(数组名) - 数组名代表整个数组 计算的是整个数组的大小
+  	//&数组名 - 数组名代表整个数组,取出的是整个数组的地址
+  	//除此之外，所有的数组名都是代表数组首元素的地址
+  
+  	int a[] = { 1,2,3,4 };
+  
+  	printf("%d\n", sizeof(a)); //16/32   a代表整个数组 计算整个数组的大小
+  	printf("%d\n", sizeof(a + 0));//4/8  a+0代表数组第一个元素的地址
+  	printf("%d\n", sizeof(*a));//4/8 *a代表数组第一个元素的地址
+  	printf("%d\n", sizeof(a + 1));//4/8 a+1代表数组的第二个元素的地址
+  	printf("%d\n", sizeof(a[1]));//4/8 a[1]代表数组的第二个元素的地址
+  
+  	printf("%d\n", sizeof(&a)); //4/8  &a虽然是数组的地址，但也是地址，sizeof(&a)计算的是一个地址的大小，这个地址所在的是数组第一个元素
+  	printf("%d\n", sizeof(*&a));//16/32  数组的地址解引用后得到数组，所以sizeof(*&a)计算的是整个数组的大小
+  	printf("%d\n", sizeof(&a + 1));//4/8 &a+1代表数组后一个空间的地址。
+  	printf("%d\n", sizeof(&a[0]));//4/8 &a[0]代表数组的第一个元素的地址
+  	printf("%d\n", sizeof(&a[0]+1));//4/8 &a[0]+1代表数组的第二个元素的地址
+  	return 0;
+  }
+  ```
 
+##### [2]sizeof 计算字符数组
 
+- ```c
+  int main() {
+  	//char类型的字符大小为1字节
+  	//而char类型的地址指针的大小为4/8字节
+  
+  	char arr[] = { 'a','b','c','d','e','f' };
+  
+  	printf("%d%n", sizeof(arr));//6 arr是数组的地址
+  	printf("%d%n", sizeof(arr + 0));//4/8为什么不是1,字符所在空间大小为一个字节，地址为四个字节。arr+0数组第一个元素
+  	printf("%d%n", sizeof(*arr));//1 *arr 代表数组第一个元素
+  	printf("%d%n", sizeof(arr[1]));//1 arr[1]代表数组第二个元素
+  	printf("%d%n", sizeof(&arr));//4/8 &arr代表取出二维数组的地址，地址为4/8的大小
+  	printf("%d%n", sizeof(&arr + 1));//4/8 &arr+1 代表数组后一个空间的地址
+  	printf("%d%n", sizeof(&arr[0] + 1));//4/8 &arr[0]+1 代表首元素的后一个地址（第二个元素）
+  }
+  ```
+
+- ```c
+  int main() {
+  	// strlen 从首元素开始数，直到找到\0为止。
+  
+  	char arr[] = "abcdef"; //字符串的结构方式就是最后一个是 \0
+  
+  	//[a b c d e f \0]
+  	printf("%d%n", sizeof(arr));//7 包括\0有7个元素，每个元素都是char类型，大小为1字节
+  	printf("%d%n", sizeof(arr + 0));//4/8 arr代表首元素地址，arr+0还是首元素地址，地址大小为4/8
+  	printf("%d%n", sizeof(*arr));//1 解引用首元素地址后，得到'a'字符，a字符的类型是char，所以大小为1
+  	printf("%d%n", sizeof(arr[1]));//1 arr[1] 为第二个元素，得到'b'字符，类型为char，所以大小为1
+  	printf("%d%n", sizeof(&arr));//4/8 取地址arr 得到整个数组的地址，地址的大小为4/8
+  	printf("%d%n", sizeof(&arr + 1));//4/8 跳过arr数组到下一个空间的元素的地址，地址大小为4/8
+  	printf("%d%n", sizeof(&arr[0] + 1));//4/8 第二个元素的地址，地址大小为4/8
+  }
+  ```
+
+  
+
+##### [3]strlen 计算字符数组
+
+- ```c
+  int main() {
+  	// strlen 从首元素开始数，直到找到\0为止。
+  
+  	char arr[] = { 'a','b','c','d','e','f' }; // 这样形式创建字符串数组 没有\0
+  
+  	printf("%d%n", strlen(arr));//随机值  从'a'开始数，直到遇到\0后停止
+  	printf("%d%n", strlen(arr + 0));//随机值 计算第一个元素的长度开始数， 直到遇到\0后停止
+  	printf("%d%n", strlen(*arr));//报错 strlen接受的是地址，而解引用后传递的是单个字符'a'
+  	printf("%d%n", strlen(arr[1]));//报错 strlen接受的是地址，而解引用后传递的是单个字符'b'
+  	printf("%d%n", strlen(&arr));//随机值 收到的是首元素的地址，从'a'开始数，直到遇到\0后停止
+  	printf("%d%n", strlen(&arr + 1));//随机值 跳过一个数组的地址，从一个空间开始数，直到遇到\0后停止
+  	printf("%d%n", strlen(&arr[0] + 1));//随机值 &arr[0]+1是第二个元素的地址 从'b'开始数，直到遇到\0后停止
+  }
+  ```
+
+- ```c
+  int main() {
+  	// strlen 从首元素开始数，直到找到\0为止。
+  
+  	char arr[] = "abcdef"; //字符串的结构方式就是最后一个是 \0
+  
+  	printf("%d%n", strlen(arr));//6 从第一个元素开始数，直到\0停下
+  	printf("%d%n", strlen(arr + 0));//6 首元素地址从第一个元素开始数，直到\0停下
+  	printf("%d%n", strlen(*arr));//报错 解引用后传递的是‘a’字符,而strlen接收的是地址，所以报错
+  	printf("%d%n", strlen(arr[1]));//报错 解引用后传递的是‘b’字符,而strlen接收的是地址，所以报错
+  	printf("%d%n", strlen(&arr));//6 从第一个元素开始数，直到\0停下
+  	printf("%d%n", strlen(&arr + 1));//随机值 跳过arr到下一个空间，开始数，直到\0停下
+  	printf("%d%n", strlen(&arr[0] + 1));//5 从第二个元素开始数，直到\0停下
+  }
+  ```
+
+  
+
+##### [4]sizeof 计算指针类型
+
+- ```c
+  int main() {
+  	char* p = "abcdef";
+  
+  	printf("%d%n", sizeof(p));//4/8 ,p是一个字符指针，指针大小为4/8
+  	printf("%d%n", sizeof(p + 1));//4/8 ，p+1也是一个字符指针，也是一个地址，大小4/8
+  	printf("%d%n", sizeof(*p));//1 ，*解引用p得到首元素'a'，char字符大小为1
+  	printf("%d%n", sizeof(p[0]));//1 p[0] = *(p+0)  得到'a',char字符大小为1
+  	printf("%d%n", sizeof(&p));//4/8，取p的地址，地址大小4/8
+  	printf("%d%n", sizeof(&p + 1));//4/8，取p的地址+1跳过一个p，但也是地址，地址大小4/8
+  	printf("%d%n", sizeof(&p[0] + 1));//4/8 &取地址最后得到的都是地址，地址大小4/8
+  }
+  ```
+
+  
 
    
 
